@@ -1,0 +1,48 @@
+﻿@model Project_BanLapTop.Models.tb_user
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Active = "user";
+}
+<div id="content" class="container-fluid">
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Cập nhật người dùng
+        </div>
+        <div class="card-body">
+            <form action="~/Admin/User/Update/@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label for="fullname">Họ và tên</label>
+                    <input class="form-control" type="text" value="@Model.Fullname" name="Fullname" id="fullname">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="text" value="@Model.Email" name="Email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="username">Tên đăng nhập</label>
+                    <input class="form-control" type="text" readonly value="@Model.Username" name="Username" id="username">
+                </div>
+                <div class="form-group">
+                    <label for="Password">Mật khẩu</label>
+                    <input class="form-control" type="password" name="Password" id="Password">
+                </div>
+
+
+                @*<div class="form-group">
+            <label for="">Nhóm quyền</label>
+            <select class="form-control" id="">
+                <option>Chọn quyền</option>S
+                <option>Danh mục 1</option>
+                <option>Danh mục 2</option>
+                <option>Danh mục 3</option>
+                <option>Danh mục 4</option>
+            </select>
+        </div>*@
+
+                <button type="submit" class="btn btn-primary"> Cập Nhật</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+﻿
+@model Project_BanLapTop.Models.tb_product
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Active = "product";
+}
+
+<div id="content" class="container-fluid">
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Cập nhật sản phẩm
+        </div>
+        <div class="card-body">
+            <form action="~/Admin/Product/Update/@Model.Id" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="productCode">Mã sản phẩm</label>
+                            <input class="form-control" value="@Model.ProductCode" type="text" name="productCode" id="productCode">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Tên sản phẩm</label>
+                            <input class="form-control" value="@Model.Name" type="text" name="name" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Giá</label>
+                            <input class="form-control" type="number" value="@Model.Price" name="price" id="price">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantityInSock">Số lượng tồn</label>
+                            <input class="form-control" type="number" value="@Model.QuantityInSock" name="quantityInSock" id="quantityInSock">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="shortDescription">Mô tả sản phẩm</label>
+                            <textarea name="shortDescription" class="form-control" id="shortDescription" cols="30" rows="12">@Model.ShortDescription</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="detailDescription">Chi tiết sản phẩm</label>
+                    <textarea name="detailDescription" class="form-control" id="detailDescription" cols="30" rows="5">@Model.DetailDescription</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Ảnh đại diện sản phẩm</label>
+                    <input type="file" name="image" id="image" class="form-control-file" />
+                    <img style="width:30%;height:auto" src="@Model.Image" alt="Alternate Text" />
+                </div>
+
+                <div class="form-group">
+                    <label for="detail_images">Ảnh chi tiết sản phẩm</label>
+                    <input type="file" name="detail_images" multiple="multiple" id="detail_images" class="form-control-file" />
+                    @foreach (var item in Model.ListProductImage)
+                    {
+                        <img style="height:auto;width:30%;" src="@item.Image" alt="Alternate Text" />
+
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Danh mục</label>
+                    <select class="form-control" id="category" name="Category_Id">
+                        <option value="">Chọn danh mục</option>
+                        @foreach (var item in Model.ListCategory)
+                        {
+                            <option value="@item.Id" @Html.Raw(Model.Category_Id == item.Id ? "selected" : "")>@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        CKEDITOR.replace("detailDescription")
+        function BrowseSever() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = SetFileField;
+            finder.popup();
+        }
+    </script>
+}
+

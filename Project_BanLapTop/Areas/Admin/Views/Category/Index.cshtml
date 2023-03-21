@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Project_BanLapTop.Models.tb_category>
+@{
+    ViewBag.Title = "Danh sách danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Active = "category";
+}
+
+<div id="content" class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    Danh mục sản phẩm
+                </div>
+                <div class="card-body">
+                    <form action="~/Admin/Category/Create" method="post">
+                        <div class="form-group">
+                            <label for="name">Tên danh mục</label>
+                            <input class="form-control" type="text" name="Name" id="name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    Danh sách
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên danh mục</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ 
+                                var temp = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                temp++;
+                                <tr>
+                                    <th scope="row">@temp</th>
+                                    <td>@item.Name</td>
+                                    <td>@item.CreatedDate</td>
+                                    <td>
+                                        <a href="~/Admin/Category/Update/@item.Id" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                        <a href="~/Admin/Category/Delete/@item.Id" onclick="return comfirm("Bạn có chắc chắn muốn xóa bản ghi này không?\")" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
