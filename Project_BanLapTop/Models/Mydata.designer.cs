@@ -33,6 +33,9 @@ namespace Project_BanLapTop.Models
     partial void Inserttb_category(tb_category instance);
     partial void Updatetb_category(tb_category instance);
     partial void Deletetb_category(tb_category instance);
+    partial void Inserttb_user(tb_user instance);
+    partial void Updatetb_user(tb_user instance);
+    partial void Deletetb_user(tb_user instance);
     partial void Inserttb_guest(tb_guest instance);
     partial void Updatetb_guest(tb_guest instance);
     partial void Deletetb_guest(tb_guest instance);
@@ -45,12 +48,15 @@ namespace Project_BanLapTop.Models
     partial void Inserttb_product(tb_product instance);
     partial void Updatetb_product(tb_product instance);
     partial void Deletetb_product(tb_product instance);
-    partial void Inserttb_user(tb_user instance);
-    partial void Updatetb_user(tb_user instance);
-    partial void Deletetb_user(tb_user instance);
     partial void Inserttb_productImage(tb_productImage instance);
     partial void Updatetb_productImage(tb_productImage instance);
     partial void Deletetb_productImage(tb_productImage instance);
+    partial void Inserttb_role(tb_role instance);
+    partial void Updatetb_role(tb_role instance);
+    partial void Deletetb_role(tb_role instance);
+    partial void Inserttb_user_role(tb_user_role instance);
+    partial void Updatetb_user_role(tb_user_role instance);
+    partial void Deletetb_user_role(tb_user_role instance);
     #endregion
 		
 		public MydataDataContext() : 
@@ -91,6 +97,14 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
+		public System.Data.Linq.Table<tb_user> tb_users
+		{
+			get
+			{
+				return this.GetTable<tb_user>();
+			}
+		}
+		
 		public System.Data.Linq.Table<tb_guest> tb_guests
 		{
 			get
@@ -123,19 +137,27 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<tb_user> tb_users
-		{
-			get
-			{
-				return this.GetTable<tb_user>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tb_productImage> tb_productImages
 		{
 			get
 			{
 				return this.GetTable<tb_productImage>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tb_role> tb_roles
+		{
+			get
+			{
+				return this.GetTable<tb_role>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tb_user_role> tb_user_roles
+		{
+			get
+			{
+				return this.GetTable<tb_user_role>();
 			}
 		}
 	}
@@ -350,21 +372,31 @@ namespace Project_BanLapTop.Models
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_guest")]
-	public partial class tb_guest : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_user")]
+	public partial class tb_user : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _Id;
 		
-		private string _CustomerName;
+		private string _Fullname;
+		
+		private string _Username;
+		
+		private string _Password;
 		
 		private string _Email;
 		
-		private string _PhoneNumber;
+		private System.Nullable<System.DateTime> _CreatedDate;
 		
-		private string _Address;
+		private string _ModifiedBy;
+		
+		private string _CreatedBy;
+		
+		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private EntitySet<tb_user_role> _tb_user_roles;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -372,18 +404,27 @@ namespace Project_BanLapTop.Models
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnCustomerNameChanging(string value);
-    partial void OnCustomerNameChanged();
+    partial void OnFullnameChanging(string value);
+    partial void OnFullnameChanged();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
     partial void OnEmailChanging(string value);
     partial void OnEmailChanged();
-    partial void OnPhoneNumberChanging(string value);
-    partial void OnPhoneNumberChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
+    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedDateChanged();
+    partial void OnModifiedByChanging(string value);
+    partial void OnModifiedByChanged();
+    partial void OnCreatedByChanging(string value);
+    partial void OnCreatedByChanged();
+    partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnModifiedDateChanged();
     #endregion
 		
-		public tb_guest()
+		public tb_user()
 		{
+			this._tb_user_roles = new EntitySet<tb_user_role>(new Action<tb_user_role>(this.attach_tb_user_roles), new Action<tb_user_role>(this.detach_tb_user_roles));
 			OnCreated();
 		}
 		
@@ -407,27 +448,67 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string CustomerName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fullname", DbType="NVarChar(255)")]
+		public string Fullname
 		{
 			get
 			{
-				return this._CustomerName;
+				return this._Fullname;
 			}
 			set
 			{
-				if ((this._CustomerName != value))
+				if ((this._Fullname != value))
 				{
-					this.OnCustomerNameChanging(value);
+					this.OnFullnameChanging(value);
 					this.SendPropertyChanging();
-					this._CustomerName = value;
-					this.SendPropertyChanged("CustomerName");
-					this.OnCustomerNameChanged();
+					this._Fullname = value;
+					this.SendPropertyChanged("Fullname");
+					this.OnFullnameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(MAX)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(255)")]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(60)")]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255)")]
 		public string Email
 		{
 			get
@@ -447,43 +528,96 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumber", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string PhoneNumber
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedDate
 		{
 			get
 			{
-				return this._PhoneNumber;
+				return this._CreatedDate;
 			}
 			set
 			{
-				if ((this._PhoneNumber != value))
+				if ((this._CreatedDate != value))
 				{
-					this.OnPhoneNumberChanging(value);
+					this.OnCreatedDateChanging(value);
 					this.SendPropertyChanging();
-					this._PhoneNumber = value;
-					this.SendPropertyChanged("PhoneNumber");
-					this.OnPhoneNumberChanged();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Address
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedBy", DbType="NVarChar(255)")]
+		public string ModifiedBy
 		{
 			get
 			{
-				return this._Address;
+				return this._ModifiedBy;
 			}
 			set
 			{
-				if ((this._Address != value))
+				if ((this._ModifiedBy != value))
 				{
-					this.OnAddressChanging(value);
+					this.OnModifiedByChanging(value);
 					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
+					this._ModifiedBy = value;
+					this.SendPropertyChanged("ModifiedBy");
+					this.OnModifiedByChanged();
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="NVarChar(255)")]
+		public string CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModifiedDate
+		{
+			get
+			{
+				return this._ModifiedDate;
+			}
+			set
+			{
+				if ((this._ModifiedDate != value))
+				{
+					this.OnModifiedDateChanging(value);
+					this.SendPropertyChanging();
+					this._ModifiedDate = value;
+					this.SendPropertyChanged("ModifiedDate");
+					this.OnModifiedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_user_tb_user_role", Storage="_tb_user_roles", ThisKey="Id", OtherKey="idUser")]
+		public EntitySet<tb_user_role> tb_user_roles
+		{
+			get
+			{
+				return this._tb_user_roles;
+			}
+			set
+			{
+				this._tb_user_roles.Assign(value);
 			}
 		}
 		
@@ -506,35 +640,45 @@ namespace Project_BanLapTop.Models
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
+		
+		private void attach_tb_user_roles(tb_user_role entity)
+		{
+			this.SendPropertyChanging();
+			entity.tb_user = this;
+		}
+		
+		private void detach_tb_user_roles(tb_user_role entity)
+		{
+			this.SendPropertyChanging();
+			entity.tb_user = null;
+		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_order")]
-	public partial class tb_order : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_guest")]
+	public partial class tb_guest : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
 		private int _Id;
 		
-		private string _Code;
+		private string _Fullname;
 		
-		private int _GuestID;
+		private string _Email;
 		
-		private int _Status;
+		private string _Phone;
 		
-		private int _Quantity;
+		private string _AddressShip;
 		
-		private decimal _TotalPrice;
+		private string _Username;
 		
-		private string _CreatedBy;
+		private string _Password;
 		
-		private System.DateTime _CreatedDate;
+		private string _Gender;
 		
-		private string _ModifiedBy;
+		private System.Nullable<System.DateTime> _Date_of_birth;
 		
-		private System.DateTime _ModifiedDate;
-		
-		private EntitySet<tb_orderDetail> _tb_orderDetails;
+		private EntitySet<tb_order> _tb_orders;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -542,29 +686,27 @@ namespace Project_BanLapTop.Models
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnCodeChanging(string value);
-    partial void OnCodeChanged();
-    partial void OnGuestIDChanging(int value);
-    partial void OnGuestIDChanged();
-    partial void OnStatusChanging(int value);
-    partial void OnStatusChanged();
-    partial void OnQuantityChanging(int value);
-    partial void OnQuantityChanged();
-    partial void OnTotalPriceChanging(decimal value);
-    partial void OnTotalPriceChanged();
-    partial void OnCreatedByChanging(string value);
-    partial void OnCreatedByChanged();
-    partial void OnCreatedDateChanging(System.DateTime value);
-    partial void OnCreatedDateChanged();
-    partial void OnModifiedByChanging(string value);
-    partial void OnModifiedByChanged();
-    partial void OnModifiedDateChanging(System.DateTime value);
-    partial void OnModifiedDateChanged();
+    partial void OnFullnameChanging(string value);
+    partial void OnFullnameChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnPhoneChanging(string value);
+    partial void OnPhoneChanged();
+    partial void OnAddressShipChanging(string value);
+    partial void OnAddressShipChanged();
+    partial void OnUsernameChanging(string value);
+    partial void OnUsernameChanged();
+    partial void OnPasswordChanging(string value);
+    partial void OnPasswordChanged();
+    partial void OnGenderChanging(string value);
+    partial void OnGenderChanged();
+    partial void OnDate_of_birthChanging(System.Nullable<System.DateTime> value);
+    partial void OnDate_of_birthChanged();
     #endregion
 		
-		public tb_order()
+		public tb_guest()
 		{
-			this._tb_orderDetails = new EntitySet<tb_orderDetail>(new Action<tb_orderDetail>(this.attach_tb_orderDetails), new Action<tb_orderDetail>(this.detach_tb_orderDetails));
+			this._tb_orders = new EntitySet<tb_order>(new Action<tb_order>(this.attach_tb_orders), new Action<tb_order>(this.detach_tb_orders));
 			OnCreated();
 		}
 		
@@ -588,22 +730,287 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Code", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Code
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fullname", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Fullname
 		{
 			get
 			{
-				return this._Code;
+				return this._Fullname;
 			}
 			set
 			{
-				if ((this._Code != value))
+				if ((this._Fullname != value))
 				{
-					this.OnCodeChanging(value);
+					this.OnFullnameChanging(value);
 					this.SendPropertyChanging();
-					this._Code = value;
-					this.SendPropertyChanged("Code");
-					this.OnCodeChanged();
+					this._Fullname = value;
+					this.SendPropertyChanged("Fullname");
+					this.OnFullnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(255)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="VarChar(11)")]
+		public string Phone
+		{
+			get
+			{
+				return this._Phone;
+			}
+			set
+			{
+				if ((this._Phone != value))
+				{
+					this.OnPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._Phone = value;
+					this.SendPropertyChanged("Phone");
+					this.OnPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressShip", DbType="NText", UpdateCheck=UpdateCheck.Never)]
+		public string AddressShip
+		{
+			get
+			{
+				return this._AddressShip;
+			}
+			set
+			{
+				if ((this._AddressShip != value))
+				{
+					this.OnAddressShipChanging(value);
+					this.SendPropertyChanging();
+					this._AddressShip = value;
+					this.SendPropertyChanged("AddressShip");
+					this.OnAddressShipChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string Username
+		{
+			get
+			{
+				return this._Username;
+			}
+			set
+			{
+				if ((this._Username != value))
+				{
+					this.OnUsernameChanging(value);
+					this.SendPropertyChanging();
+					this._Username = value;
+					this.SendPropertyChanged("Username");
+					this.OnUsernameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(60) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this.OnPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._Password = value;
+					this.SendPropertyChanged("Password");
+					this.OnPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
+		public string Gender
+		{
+			get
+			{
+				return this._Gender;
+			}
+			set
+			{
+				if ((this._Gender != value))
+				{
+					this.OnGenderChanging(value);
+					this.SendPropertyChanging();
+					this._Gender = value;
+					this.SendPropertyChanged("Gender");
+					this.OnGenderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date_of_birth", DbType="Date")]
+		public System.Nullable<System.DateTime> Date_of_birth
+		{
+			get
+			{
+				return this._Date_of_birth;
+			}
+			set
+			{
+				if ((this._Date_of_birth != value))
+				{
+					this.OnDate_of_birthChanging(value);
+					this.SendPropertyChanging();
+					this._Date_of_birth = value;
+					this.SendPropertyChanged("Date_of_birth");
+					this.OnDate_of_birthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_guest_tb_order", Storage="_tb_orders", ThisKey="Id", OtherKey="GuestID")]
+		public EntitySet<tb_order> tb_orders
+		{
+			get
+			{
+				return this._tb_orders;
+			}
+			set
+			{
+				this._tb_orders.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_tb_orders(tb_order entity)
+		{
+			this.SendPropertyChanging();
+			entity.tb_guest = this;
+		}
+		
+		private void detach_tb_orders(tb_order entity)
+		{
+			this.SendPropertyChanging();
+			entity.tb_guest = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_order")]
+	public partial class tb_order : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _GuestID;
+		
+		private string _Status;
+		
+		private System.Nullable<System.DateTime> _CreatedDate;
+		
+		private string _ModifiedBy;
+		
+		private System.Nullable<System.DateTime> _ModifiedDate;
+		
+		private string _Note;
+		
+		private System.Nullable<int> _Quantity;
+		
+		private System.Nullable<decimal> _Total;
+		
+		private EntitySet<tb_orderDetail> _tb_orderDetails;
+		
+		private EntityRef<tb_guest> _tb_guest;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnGuestIDChanging(int value);
+    partial void OnGuestIDChanged();
+    partial void OnStatusChanging(string value);
+    partial void OnStatusChanged();
+    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedDateChanged();
+    partial void OnModifiedByChanging(string value);
+    partial void OnModifiedByChanged();
+    partial void OnModifiedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnModifiedDateChanged();
+    partial void OnNoteChanging(string value);
+    partial void OnNoteChanged();
+    partial void OnQuantityChanging(System.Nullable<int> value);
+    partial void OnQuantityChanged();
+    partial void OnTotalChanging(System.Nullable<decimal> value);
+    partial void OnTotalChanged();
+    #endregion
+		
+		public tb_order()
+		{
+			this._tb_orderDetails = new EntitySet<tb_orderDetail>(new Action<tb_orderDetail>(this.attach_tb_orderDetails), new Action<tb_orderDetail>(this.detach_tb_orderDetails));
+			this._tb_guest = default(EntityRef<tb_guest>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
 				}
 			}
 		}
@@ -619,6 +1026,10 @@ namespace Project_BanLapTop.Models
 			{
 				if ((this._GuestID != value))
 				{
+					if (this._tb_guest.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnGuestIDChanging(value);
 					this.SendPropertyChanging();
 					this._GuestID = value;
@@ -628,8 +1039,8 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int NOT NULL")]
-		public int Status
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Status
 		{
 			get
 			{
@@ -648,68 +1059,8 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Int NOT NULL")]
-		public int Quantity
-		{
-			get
-			{
-				return this._Quantity;
-			}
-			set
-			{
-				if ((this._Quantity != value))
-				{
-					this.OnQuantityChanging(value);
-					this.SendPropertyChanging();
-					this._Quantity = value;
-					this.SendPropertyChanged("Quantity");
-					this.OnQuantityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPrice", DbType="Decimal(18,2) NOT NULL")]
-		public decimal TotalPrice
-		{
-			get
-			{
-				return this._TotalPrice;
-			}
-			set
-			{
-				if ((this._TotalPrice != value))
-				{
-					this.OnTotalPriceChanging(value);
-					this.SendPropertyChanging();
-					this._TotalPrice = value;
-					this.SendPropertyChanged("TotalPrice");
-					this.OnTotalPriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="NVarChar(MAX)")]
-		public string CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedDate
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> CreatedDate
 		{
 			get
 			{
@@ -748,8 +1099,8 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedDate", DbType="DateTime NOT NULL")]
-		public System.DateTime ModifiedDate
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiedDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ModifiedDate
 		{
 			get
 			{
@@ -768,6 +1119,66 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="NText", UpdateCheck=UpdateCheck.Never)]
+		public string Note
+		{
+			get
+			{
+				return this._Note;
+			}
+			set
+			{
+				if ((this._Note != value))
+				{
+					this.OnNoteChanging(value);
+					this.SendPropertyChanging();
+					this._Note = value;
+					this.SendPropertyChanged("Note");
+					this.OnNoteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Int")]
+		public System.Nullable<int> Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this.OnQuantityChanging(value);
+					this.SendPropertyChanging();
+					this._Quantity = value;
+					this.SendPropertyChanged("Quantity");
+					this.OnQuantityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Total", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Total
+		{
+			get
+			{
+				return this._Total;
+			}
+			set
+			{
+				if ((this._Total != value))
+				{
+					this.OnTotalChanging(value);
+					this.SendPropertyChanging();
+					this._Total = value;
+					this.SendPropertyChanged("Total");
+					this.OnTotalChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_order_tb_orderDetail", Storage="_tb_orderDetails", ThisKey="Id", OtherKey="OrderId")]
 		public EntitySet<tb_orderDetail> tb_orderDetails
 		{
@@ -778,6 +1189,40 @@ namespace Project_BanLapTop.Models
 			set
 			{
 				this._tb_orderDetails.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_guest_tb_order", Storage="_tb_guest", ThisKey="GuestID", OtherKey="Id", IsForeignKey=true)]
+		public tb_guest tb_guest
+		{
+			get
+			{
+				return this._tb_guest.Entity;
+			}
+			set
+			{
+				tb_guest previousValue = this._tb_guest.Entity;
+				if (((previousValue != value) 
+							|| (this._tb_guest.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tb_guest.Entity = null;
+						previousValue.tb_orders.Remove(this);
+					}
+					this._tb_guest.Entity = value;
+					if ((value != null))
+					{
+						value.tb_orders.Add(this);
+						this._GuestID = value.Id;
+					}
+					else
+					{
+						this._GuestID = default(int);
+					}
+					this.SendPropertyChanged("tb_guest");
+				}
 			}
 		}
 		
@@ -1086,15 +1531,15 @@ namespace Project_BanLapTop.Models
 		
 		private System.Nullable<int> _Category_Id;
 		
+		private System.Nullable<bool> _SellWell;
+		
+		private System.Nullable<bool> _Outstanding;
+		
 		private EntitySet<tb_orderDetail> _tb_orderDetails;
 		
 		private EntitySet<tb_productImage> _tb_productImages;
 		
 		private EntityRef<tb_category> _tb_category;
-
-		public List<tb_category> ListCategory;
-
-		public List<tb_productImage> ListProductImage;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1126,6 +1571,10 @@ namespace Project_BanLapTop.Models
     partial void OnModifiedDateChanged();
     partial void OnCategory_IdChanging(System.Nullable<int> value);
     partial void OnCategory_IdChanged();
+    partial void OnSellWellChanging(System.Nullable<bool> value);
+    partial void OnSellWellChanged();
+    partial void OnOutstandingChanging(System.Nullable<bool> value);
+    partial void OnOutstandingChanged();
     #endregion
 		
 		public tb_product()
@@ -1400,6 +1849,46 @@ namespace Project_BanLapTop.Models
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SellWell", DbType="Bit")]
+		public System.Nullable<bool> SellWell
+		{
+			get
+			{
+				return this._SellWell;
+			}
+			set
+			{
+				if ((this._SellWell != value))
+				{
+					this.OnSellWellChanging(value);
+					this.SendPropertyChanging();
+					this._SellWell = value;
+					this.SendPropertyChanged("SellWell");
+					this.OnSellWellChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Outstanding", DbType="Bit")]
+		public System.Nullable<bool> Outstanding
+		{
+			get
+			{
+				return this._Outstanding;
+			}
+			set
+			{
+				if ((this._Outstanding != value))
+				{
+					this.OnOutstandingChanging(value);
+					this.SendPropertyChanging();
+					this._Outstanding = value;
+					this.SendPropertyChanged("Outstanding");
+					this.OnOutstandingChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_product_tb_orderDetail", Storage="_tb_orderDetails", ThisKey="Id", OtherKey="ProductID")]
 		public EntitySet<tb_orderDetail> tb_orderDetails
 		{
@@ -1502,260 +1991,6 @@ namespace Project_BanLapTop.Models
 		{
 			this.SendPropertyChanging();
 			entity.tb_product = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_user")]
-	public partial class tb_user : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Fullname;
-		
-		private string _Username;
-		
-		private string _Password;
-		
-		private string _Email;
-		
-		private System.Nullable<System.DateTime> _CreatedDate;
-		
-		private string _ModifiledBy;
-		
-		private string _CreatedBy;
-		
-		private System.Nullable<System.DateTime> _ModifiledDate;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnFullnameChanging(string value);
-    partial void OnFullnameChanged();
-    partial void OnUsernameChanging(string value);
-    partial void OnUsernameChanged();
-    partial void OnPasswordChanging(string value);
-    partial void OnPasswordChanged();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnCreatedDateChanged();
-    partial void OnModifiledByChanging(string value);
-    partial void OnModifiledByChanged();
-    partial void OnCreatedByChanging(string value);
-    partial void OnCreatedByChanged();
-    partial void OnModifiledDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnModifiledDateChanged();
-    #endregion
-		
-		public tb_user()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fullname", DbType="NVarChar(255)")]
-		public string Fullname
-		{
-			get
-			{
-				return this._Fullname;
-			}
-			set
-			{
-				if ((this._Fullname != value))
-				{
-					this.OnFullnameChanging(value);
-					this.SendPropertyChanging();
-					this._Fullname = value;
-					this.SendPropertyChanged("Fullname");
-					this.OnFullnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(255)")]
-		public string Username
-		{
-			get
-			{
-				return this._Username;
-			}
-			set
-			{
-				if ((this._Username != value))
-				{
-					this.OnUsernameChanging(value);
-					this.SendPropertyChanging();
-					this._Username = value;
-					this.SendPropertyChanged("Username");
-					this.OnUsernameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(60)")]
-		public string Password
-		{
-			get
-			{
-				return this._Password;
-			}
-			set
-			{
-				if ((this._Password != value))
-				{
-					this.OnPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._Password = value;
-					this.SendPropertyChanged("Password");
-					this.OnPasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255)")]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this.OnEmailChanging(value);
-					this.SendPropertyChanging();
-					this._Email = value;
-					this.SendPropertyChanged("Email");
-					this.OnEmailChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CreatedDate
-		{
-			get
-			{
-				return this._CreatedDate;
-			}
-			set
-			{
-				if ((this._CreatedDate != value))
-				{
-					this.OnCreatedDateChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedDate = value;
-					this.SendPropertyChanged("CreatedDate");
-					this.OnCreatedDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiledBy", DbType="NVarChar(255)")]
-		public string ModifiledBy
-		{
-			get
-			{
-				return this._ModifiledBy;
-			}
-			set
-			{
-				if ((this._ModifiledBy != value))
-				{
-					this.OnModifiledByChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiledBy = value;
-					this.SendPropertyChanged("ModifiledBy");
-					this.OnModifiledByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="NVarChar(255)")]
-		public string CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ModifiledDate", DbType="DateTime")]
-		public System.Nullable<System.DateTime> ModifiledDate
-		{
-			get
-			{
-				return this._ModifiledDate;
-			}
-			set
-			{
-				if ((this._ModifiledDate != value))
-				{
-					this.OnModifiledDateChanging(value);
-					this.SendPropertyChanging();
-					this._ModifiledDate = value;
-					this.SendPropertyChanged("ModifiledDate");
-					this.OnModifiledDateChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -1885,6 +2120,312 @@ namespace Project_BanLapTop.Models
 						this._Product_Id = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("tb_product");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_role")]
+	public partial class tb_role : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _idRole;
+		
+		private string _Name;
+		
+		private EntitySet<tb_user_role> _tb_user_roles;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidRoleChanging(string value);
+    partial void OnidRoleChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public tb_role()
+		{
+			this._tb_user_roles = new EntitySet<tb_user_role>(new Action<tb_user_role>(this.attach_tb_user_roles), new Action<tb_user_role>(this.detach_tb_user_roles));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idRole", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string idRole
+		{
+			get
+			{
+				return this._idRole;
+			}
+			set
+			{
+				if ((this._idRole != value))
+				{
+					this.OnidRoleChanging(value);
+					this.SendPropertyChanging();
+					this._idRole = value;
+					this.SendPropertyChanged("idRole");
+					this.OnidRoleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_role_tb_user_role", Storage="_tb_user_roles", ThisKey="idRole", OtherKey="idRole")]
+		public EntitySet<tb_user_role> tb_user_roles
+		{
+			get
+			{
+				return this._tb_user_roles;
+			}
+			set
+			{
+				this._tb_user_roles.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_tb_user_roles(tb_user_role entity)
+		{
+			this.SendPropertyChanging();
+			entity.tb_role = this;
+		}
+		
+		private void detach_tb_user_roles(tb_user_role entity)
+		{
+			this.SendPropertyChanging();
+			entity.tb_role = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tb_user_role")]
+	public partial class tb_user_role : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _idRole;
+		
+		private int _idUser;
+		
+		private EntityRef<tb_role> _tb_role;
+		
+		private EntityRef<tb_user> _tb_user;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnidRoleChanging(string value);
+    partial void OnidRoleChanged();
+    partial void OnidUserChanging(int value);
+    partial void OnidUserChanged();
+    #endregion
+		
+		public tb_user_role()
+		{
+			this._tb_role = default(EntityRef<tb_role>);
+			this._tb_user = default(EntityRef<tb_user>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idRole", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string idRole
+		{
+			get
+			{
+				return this._idRole;
+			}
+			set
+			{
+				if ((this._idRole != value))
+				{
+					if (this._tb_role.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidRoleChanging(value);
+					this.SendPropertyChanging();
+					this._idRole = value;
+					this.SendPropertyChanged("idRole");
+					this.OnidRoleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idUser", DbType="Int NOT NULL")]
+		public int idUser
+		{
+			get
+			{
+				return this._idUser;
+			}
+			set
+			{
+				if ((this._idUser != value))
+				{
+					if (this._tb_user.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidUserChanging(value);
+					this.SendPropertyChanging();
+					this._idUser = value;
+					this.SendPropertyChanged("idUser");
+					this.OnidUserChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_role_tb_user_role", Storage="_tb_role", ThisKey="idRole", OtherKey="idRole", IsForeignKey=true)]
+		public tb_role tb_role
+		{
+			get
+			{
+				return this._tb_role.Entity;
+			}
+			set
+			{
+				tb_role previousValue = this._tb_role.Entity;
+				if (((previousValue != value) 
+							|| (this._tb_role.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tb_role.Entity = null;
+						previousValue.tb_user_roles.Remove(this);
+					}
+					this._tb_role.Entity = value;
+					if ((value != null))
+					{
+						value.tb_user_roles.Add(this);
+						this._idRole = value.idRole;
+					}
+					else
+					{
+						this._idRole = default(string);
+					}
+					this.SendPropertyChanged("tb_role");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tb_user_tb_user_role", Storage="_tb_user", ThisKey="idUser", OtherKey="Id", IsForeignKey=true)]
+		public tb_user tb_user
+		{
+			get
+			{
+				return this._tb_user.Entity;
+			}
+			set
+			{
+				tb_user previousValue = this._tb_user.Entity;
+				if (((previousValue != value) 
+							|| (this._tb_user.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tb_user.Entity = null;
+						previousValue.tb_user_roles.Remove(this);
+					}
+					this._tb_user.Entity = value;
+					if ((value != null))
+					{
+						value.tb_user_roles.Add(this);
+						this._idUser = value.Id;
+					}
+					else
+					{
+						this._idUser = default(int);
+					}
+					this.SendPropertyChanged("tb_user");
 				}
 			}
 		}

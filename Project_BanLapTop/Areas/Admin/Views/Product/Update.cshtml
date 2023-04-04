@@ -1,5 +1,4 @@
-﻿
-@model Project_BanLapTop.Models.tb_product
+﻿@model Tuple<Project_BanLapTop.Models.tb_product ,List<Project_BanLapTop.Models.tb_category> , List<Project_BanLapTop.Models.tb_productImage>>
 @{
     ViewBag.Title = "Update";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -12,61 +11,73 @@
             Cập nhật sản phẩm
         </div>
         <div class="card-body">
-            <form action="~/Admin/Product/Update/@Model.Id" method="post" enctype="multipart/form-data">
+            <form action="~/Admin/Product/Update/@Model.Item1.Id" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Item1.Id)
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="productCode">Mã sản phẩm</label>
-                            <input class="form-control" value="@Model.ProductCode" type="text" name="productCode" id="productCode">
+                            <input class="form-control" value="@Model.Item1.ProductCode" type="text" name="productCode" id="productCode">
                         </div>
                         <div class="form-group">
                             <label for="name">Tên sản phẩm</label>
-                            <input class="form-control" value="@Model.Name" type="text" name="name" id="name">
+                            <input class="form-control" value="@Model.Item1.Name" type="text" name="name" id="name">
                         </div>
                         <div class="form-group">
                             <label for="price">Giá</label>
-                            <input class="form-control" type="number" value="@Model.Price" name="price" id="price">
+                            <input class="form-control" type="number" value="@Model.Item1.Price" name="price" id="price">
                         </div>
                         <div class="form-group">
                             <label for="quantityInSock">Số lượng tồn</label>
-                            <input class="form-control" type="number" value="@Model.QuantityInSock" name="quantityInSock" id="quantityInSock">
+                            <input class="form-control" type="number" value="@Model.Item1.QuantityInSock" name="quantityInSock" id="quantityInSock">
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label for="shortDescription">Mô tả sản phẩm</label>
-                            <textarea name="shortDescription" class="form-control" id="shortDescription" cols="30" rows="12">@Model.ShortDescription</textarea>
+                            <textarea name="shortDescription" class="form-control" id="shortDescription" cols="30" rows="12">@Model.Item1.ShortDescription</textarea>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="detailDescription">Chi tiết sản phẩm</label>
-                    <textarea name="detailDescription" class="form-control" id="detailDescription" cols="30" rows="5">@Model.DetailDescription</textarea>
+                    <textarea name="detailDescription" class="form-control" id="detailDescription" cols="30" rows="5">@Model.Item1.DetailDescription</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="image">Ảnh đại diện sản phẩm</label>
                     <input type="file" name="image" id="image" class="form-control-file" />
-                    <img style="width:30%;height:auto" src="@Model.Image" alt="Alternate Text" />
+                    <img style="width:30%;height:auto" src="@Model.Item1.Image" alt="Alternate Text" />
                 </div>
 
                 <div class="form-group">
                     <label for="detail_images">Ảnh chi tiết sản phẩm</label>
                     <input type="file" name="detail_images" multiple="multiple" id="detail_images" class="form-control-file" />
-                    @foreach (var item in Model.ListProductImage)
+                    @foreach (var item in Model.Item3)
                     {
                         <img style="height:auto;width:30%;" src="@item.Image" alt="Alternate Text" />
-
                     }
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" name="SellWell" value="true" @Html.Raw(Model.Item1.SellWell == true ? "checked" : "") id="sellwell" class="form-check-input" />
+                    <label class="form-check-label" for="sellwell">Sản phẩm bán chạy</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" name="Outstanding" value="true" @Html.Raw(Model.Item1.Outstanding == true ? "checked" : "") id="outstanding" class="form-check-input" />
+                    <label class="form-check-label" for="outstanding">Sản phẩm nổi bật</label>
                 </div>
 
                 <div class="form-group">
                     <label for="category">Danh mục</label>
                     <select class="form-control" id="category" name="Category_Id">
                         <option value="">Chọn danh mục</option>
-                        @foreach (var item in Model.ListCategory)
+                        @foreach (var item in Model.Item2)
                         {
-                            <option value="@item.Id" @Html.Raw(Model.Category_Id == item.Id ? "selected" : "")>@item.Name</option>
+                            <option value="@item.Id" @Html.Raw(Model.Item1.Category_Id == item.Id ? "selected" : "")>@item.Name</option>
                         }
                     </select>
                 </div>

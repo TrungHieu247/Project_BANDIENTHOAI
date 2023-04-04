@@ -11,28 +11,47 @@
       <Association Name="tb_category_tb_product" Member="tb_products" ThisKey="Id" OtherKey="Category_Id" Type="tb_product" />
     </Type>
   </Table>
+  <Table Name="dbo.tb_user" Member="tb_users">
+    <Type Name="tb_user">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Fullname" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifiedBy" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="tb_user_tb_user_role" Member="tb_user_roles" ThisKey="Id" OtherKey="idUser" Type="tb_user_role" />
+    </Type>
+  </Table>
   <Table Name="dbo.tb_guest" Member="tb_guests">
     <Type Name="tb_guest">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CustomerName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Fullname" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(11)" CanBeNull="true" />
+      <Column Name="AddressShip" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Gender" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Date_of_birth" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="tb_guest_tb_order" Member="tb_orders" ThisKey="Id" OtherKey="GuestID" Type="tb_order" />
     </Type>
   </Table>
   <Table Name="dbo.tb_order" Member="tb_orders">
     <Type Name="tb_order">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Code" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="GuestID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Status" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TotalPrice" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedBy" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ModifiedBy" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Note" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Total" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Association Name="tb_order_tb_orderDetail" Member="tb_orderDetails" ThisKey="Id" OtherKey="OrderId" Type="tb_orderDetail" />
+      <Association Name="tb_guest_tb_order" Member="tb_guest" ThisKey="GuestID" OtherKey="Id" Type="tb_guest" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.tb_orderDetail" Member="tb_orderDetails">
@@ -61,22 +80,11 @@
       <Column Name="ModifiedBy" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="ModifiedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Category_Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SellWell" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Outstanding" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="tb_product_tb_orderDetail" Member="tb_orderDetails" ThisKey="Id" OtherKey="ProductID" Type="tb_orderDetail" />
       <Association Name="tb_product_tb_productImage" Member="tb_productImages" ThisKey="Id" OtherKey="Product_Id" Type="tb_productImage" />
       <Association Name="tb_category_tb_product" Member="tb_category" ThisKey="Category_Id" OtherKey="Id" Type="tb_category" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tb_user" Member="tb_users">
-    <Type Name="tb_user">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Fullname" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Username" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
-      <Column Name="Password" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
-      <Column Name="Email" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
-      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="ModifiledBy" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="CreatedBy" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="ModifiledDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.tb_productImage" Member="tb_productImages">
@@ -85,6 +93,22 @@
       <Column Name="Image" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="Product_Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="tb_product_tb_productImage" Member="tb_product" ThisKey="Product_Id" OtherKey="Id" Type="tb_product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tb_role" Member="tb_roles">
+    <Type Name="tb_role">
+      <Column Name="idRole" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="tb_role_tb_user_role" Member="tb_user_roles" ThisKey="idRole" OtherKey="idRole" Type="tb_user_role" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tb_user_role" Member="tb_user_roles">
+    <Type Name="tb_user_role">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idRole" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="idUser" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="tb_role_tb_user_role" Member="tb_role" ThisKey="idRole" OtherKey="idRole" Type="tb_role" IsForeignKey="true" />
+      <Association Name="tb_user_tb_user_role" Member="tb_user" ThisKey="idUser" OtherKey="Id" Type="tb_user" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

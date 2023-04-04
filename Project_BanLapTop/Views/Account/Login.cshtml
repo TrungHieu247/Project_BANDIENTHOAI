@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/Content/public/reset.css">
+    <link rel="stylesheet" href="~/Content/public/css/import/login.css">
+    <title>Trang đăng nhập</title>
+</head>
+
+<body>
+    <div id="wp-form-login">
+        <h1 class="title-login">Đăng nhập</h1>
+        <form action="?beforeUrl=@Request.UrlReferrer" method="POST" id="form-login">
+            <input type="text" name="username" id="username" placeholder="Username" value="">
+            <input type="password" name="password" id="password" placeholder="Password">
+            <input type="checkbox" name="remember_me" id="remember_me" value="true">
+            <label for="remember_me">Ghi nhớ đăng nhập</label>
+            <a href="~/Account/Register">Đăng ký tài khoản</a>
+            @if (TempData["Error"] != null)
+            {
+                <p style="margin-bottom: 15px;"><small class="text-danger">@TempData["Error"]</small></p>
+            }
+            <input type="submit" value="Đăng nhập" name="btn-login" id="btn-login">
+        </form>
+    </div>
+</body>
+</html>

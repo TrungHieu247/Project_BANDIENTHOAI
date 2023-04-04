@@ -1,4 +1,6 @@
-﻿@model Project_BanLapTop.Models.tb_category
+﻿@model Tuple<Project_BanLapTop.Models.tb_category, PagedList.IPagedList<Project_BanLapTop.Models.tb_category>>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Cập nhật danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -13,13 +15,62 @@
                     Danh mục sản phẩm
                 </div>
                 <div class="card-body">
-                    <form action="~/Admin/Category/Update/@Model.Id " method="post">
+                    <form action="~/Admin/Category/Update/@Model.Item1.Id " method="post">
                         <div class="form-group">
                             <label for="name">Tên danh mục</label>
-                            <input class="form-control" type="text" name="Name" value="@Model.Name" id="name">
+                            <input class="form-control" type="text" name="Name" value="@Model.Item1.Name" id="name">
+                            <span class="text-danger">@TempData["RequiredName"]</span>
                         </div>
                         <button type="submit" class="btn btn-primary">Cập Nhật</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    Danh sách
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên danh mục</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Item2.Any())
+                            {
+                                var temp = 0;
+                                foreach (var item in Model.Item2)
+                                {
+                                    temp++;
+                                    <tr>
+                                        <th scope="row">@temp</th>
+                                        <td>@item.Name</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>
+                                            <a href="~/Admin/Category/Update/@item.Id" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                            <a href="~/Admin/Category/Delete/@item.Id" onclick="return comfirm(" Bạn có chắc chắn muốn xóa bản ghi này không?\")" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4">Không có dữ liệu</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    Trang @(Model.Item2.PageCount < Model.Item2.PageNumber ? 0 : Model.Item2.PageNumber) / @Model.Item2.PageCount
+                    @Html.PagedListPager(Model.Item2, page => Url.Action("Index",
+                        new { page, pageSize = ViewBag.PageSize }))
                 </div>
             </div>
         </div>

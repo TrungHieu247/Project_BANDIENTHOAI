@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Project_BanLapTop.Models.Cart>
+@{
+    ViewBag.Title = "SuccessBuy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-content-wp" class="checkout-success">
+    <div id="wrapper" class="wp-inner clearfix">
+        <div class="section" id="checkout-success">
+            <div class="section-detail table-responsive text-center">
+                <h1 class=" text-success" style="font-weight: bold; font-size: 30px;">MUA HÀNG THÀNH CÔNG</h1>
+                <h5 class="h5">
+                    Cảm ơn quý khách đã lựa chọn sản phẩm của cửa hàng Unismart và cho chúng tôi được phục vụ quý
+                    khách
+                </h5>
+                <h5 class="h5">Tổng đài viên Unismart sẽ liên hệ đến quý khách trong thời gian sớm nhất để xác nhận đơn hàng.</h5>
+            </div>
+            <div class="section-detail table-responsive" style="min-height: 250px;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Mã sản phẩm</th>
+                            <th scope="col">Ảnh sản phẩm</th>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Giá sản phẩm</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int temp = 0;}
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">
+                                    @{ ++temp; }
+                                </th>
+                                <td>@item.ProductCode</td>
+                                <td>
+                                    <img style="width: 100px;" src="@item.Image" alt="Alternate Text" />
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@string.Format("{0:0,0}", item.Price)đ</td>
+                                <td>@item.Quantity</td>
+                                <td>@string.Format("{0:0,0}", item.Total)đ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

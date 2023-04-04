@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Project_BanLapTop.Models.tb_category>
+﻿@model PagedList.IPagedList<Project_BanLapTop.Models.tb_category>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 @{
     ViewBag.Title = "Danh sách danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     ViewBag.Active = "category";
 }
-
 <div id="content" class="container-fluid">
     <div class="row">
         <div class="col-4">
@@ -16,7 +17,8 @@
                     <form action="~/Admin/Category/Create" method="post">
                         <div class="form-group">
                             <label for="name">Tên danh mục</label>
-                            <input class="form-control" type="text" name="Name" id="name">
+                            <input class="form-control" type="text" name="Name" id="name" value="">
+                            <span class="text-danger">@TempData["RequiredName"]</span>
                         </div>
                         <button type="submit" class="btn btn-primary">Thêm mới</button>
                     </form>
@@ -39,28 +41,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @{ 
-                                var temp = 0;
-                            }
-                            @foreach (var item in Model)
+                            @if (Model != null && Model.Any())
                             {
-                                temp++;
+                                var temp = 0;
+                                foreach (var item in Model)
+                                {
+                                    temp++;
+                                    <tr>
+                                        <th scope="row">@temp</th>
+                                        <td>@item.Name</td>
+                                        <td>@item.CreatedDate</td>
+                                        <td>
+                                            <a href="~/Admin/Category/Update/@item.Id" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                            <a href="~/Admin/Category/Delete/@item.Id" onclick="return comfirm(" Bạn có chắc chắn muốn xóa bản ghi này không?\")" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
                                 <tr>
-                                    <th scope="row">@temp</th>
-                                    <td>@item.Name</td>
-                                    <td>@item.CreatedDate</td>
-                                    <td>
-                                        <a href="~/Admin/Category/Update/@item.Id" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
-                                        <a href="~/Admin/Category/Delete/@item.Id" onclick="return comfirm("Bạn có chắc chắn muốn xóa bản ghi này không?\")" class="btn btn-danger btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></a>
-                                    </td>
+                                    <td colspan="4">Không có dữ liệu</td>
                                 </tr>
                             }
-
                         </tbody>
                     </table>
+                    Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                    @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, pageSize = ViewBag.PageSize }))
                 </div>
             </div>
         </div>
     </div>
-
 </div>

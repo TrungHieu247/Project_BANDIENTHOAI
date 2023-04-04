@@ -1,0 +1,136 @@
+﻿@model PagedList.IPagedList<Project_BanLapTop.Models.tb_order>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Active = "dashboard";
+}
+<div class="container-fluid py-5">
+    <div>
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <div class="card-header">DOANH SỐ</div>
+                <div class="card-body">
+                    <h5 class="card-title">@Html.Raw(ViewBag.Sales != null ? string.Format("{0:0,0}", ViewBag.Sales) : "0") đ</h5>
+                    <p class="card-text" style="height: 60px;">Doanh số hệ thống</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header">ĐƠN HÀNG THÀNH CÔNG</div>
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Order_success</h5>
+                    <p class="card-text">Đơn hàng giao dịch thành công</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header">ĐƠN HÀNG ĐANG VẬN CHUYỂN</div>
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Order_transported</h5>
+                    <p class="card-text">Số đơn bị hủy trong hệ thống</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                <div class="card-header">ĐANG XỬ LÝ</div>
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Order_processing</h5>
+                    <p class="card-text">Số lượng đơn hàng đang xử lý</p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header">ĐƠN HÀNG HỦY</div>
+                <div class="card-body">
+                    <h5 class="card-title">@ViewBag.Order_canceled</h5>
+                    <p class="card-text">Số đơn bị hủy trong hệ thống</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end analytic  -->
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            ĐƠN HÀNG MỚI
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Mã</th>
+                        <th scope="col">Khách hàng</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Giá trị</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col">Thời gian</th>
+                        <th scope="col">Tác vụ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count > 0)
+                    {
+                        int temp = 0;
+                        foreach (var order in Model)
+                        {
+                            temp++;
+                            <tr>
+                                <th scope="row">@temp</th>
+                                <td>1212</td>
+                                <td>
+                                    @order.tb_guest.Fullname <br>
+                                    @order.tb_guest.Phone
+                                </td>
+                                <td>@order.Quantity</td>
+                                <td>@string.Format("{0:0,0}", order.Total)đ</td>
+                                <td>
+                                    @if (order.Status == "processing")
+                                    {
+                                        <span class="badge badge-warning">Đang xử lý</span>
+                                    }
+                                    else if (order.Status == "being_transported")
+                                    {
+                                        <span class="badge badge-info">Đang vận chuyển</span>
+                                    }
+                                    else if (order.Status == "success")
+                                    {
+                                        <span class="badge badge-success">Hoàn thành</span>
+                                    }
+                                    else if (order.Status == "cancelled")
+                                    {
+                                        <span class="badge badge-dark">Đã hủy</span>
+                                    }
+                                </td>
+                                <td>@order.CreatedDate</td>
+                                <td>
+                                    <a href="~/Admin/Order/Update/@order.Id" class="btn btn-success btn-sm rounded-0 text-white" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr class="text-center">
+                            <td colspan="8">Không có dữ liệu</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                new { page, pageSize = ViewBag.PageSize }))
+        </div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+﻿@model Tuple<List<Project_BanLapTop.Models.tb_category>, PagedList.IPagedList<Project_BanLapTop.Models.tb_product>>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Product_Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main-content-wp" class="clearfix category-product-page">
+    <div class="wp-inner">
+        <div class="secion" id="breadcrumb-wp">
+            <div class="secion-detail">
+                <ul class="list-item clearfix">
+                    <li>
+                        <a href="" title="">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="" title="">LapTop</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content fl-right">
+            <div class="section" id="list-product-wp">
+                <div class="section-head clearfix">
+                    <h3 class="section-title fl-left">Laptop</h3>
+                </div>
+                <div class="section-detail">
+                    <ul class="list-item clearfix">
+                        @foreach (var item in Model.Item2)
+                        {
+                            <li>
+                                <a href="~/Home/ProductDetail/@item.Id" title="" class="thumb" style="display:block;">
+                                    <img src="@item.Image">
+                                </a>
+                                <a href="~/Home/ProductDetail/@item.Id" title="" class="product-name">@item.Name</a>
+                                <div class="price">
+                                    <span class="new">@string.Format("{0:0,0}", item.Price)đ</span>
+                                </div>
+                                <div class="action clearfix">
+                                    <a href="~/Home/ProductDetail/@item.Id" title="Mua ngay" class="buy-now text-center">Mua ngay</a>
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+            Trang @(Model.Item2.PageCount < Model.Item2.PageNumber ? 0 : Model.Item2.PageNumber) / @Model.Item2.PageCount
+            @Html.PagedListPager(Model.Item2, page => Url.Action("Index",
+                new { page, pageSize = ViewBag.PageSize }))
+        </div>
+        <div class="sidebar fl-left">
+            @Html.Partial("~/Views/Shared/Category_Product_Partial.cshtml")
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@model List<Project_BanLapTop.Models.Cart>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="main-content-wp" class="cart-page">
+    <div class="section" id="breadcrumb-wp">
+        <div class="wp-inner">
+            <div class="section-detail">
+                <ul class="list-item clearfix">
+                    <li>
+                        <a href="?page=home" title="">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="" title="">Sản phẩm làm đẹp da</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="wrapper" class="wp-inner clearfix">
+        <div class="section" id="info-cart-wp">
+            <div class="section-detail table-responsive">
+                <table class="table" style="min-height: 300px;">
+                    <thead>
+                        <tr>
+                            <td>Mã sản phẩm</td>
+                            <td>Ảnh sản phẩm</td>
+                            <td>Tên sản phẩm</td>
+                            <td>Giá sản phẩm</td>
+                            <td>Số lượng</td>
+                            <td colspan="2">Thành tiền</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProductCode</td>
+                                <td>
+                                    <a href="" title="" class="thumb">
+                                        <img src="@item.Image" alt="">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="~/Home/ProductDetail/@item.Id" title="" class="name-product">@item.Name</a>
+                                </td>
+                                <td>@string.Format("{0:0,0}", item.Price) đ</td>
+                                <td>
+                                    <input type="number" data-id="@item.Id" min="1" max="10" name="num-order" value="@item.Quantity" class="num-order">
+                                </td>
+                                <td id="sub_total_@item.Id">@string.Format("{0:0,0}", item.Total)đ</td>
+                                <td>
+                                    <a href="~/Cart/DeleteCart/@item.Id" title="Xóa" class="del-product"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7">
+                                <div class="clearfix">
+                                    <p id="total-price" class="fl-right">Tổng giá: <span class="total">@string.Format("{0:0,0}", Project_BanLapTop.Models.LibraryCart.TotalPrice())đ</span></p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <div class="clearfix">
+                                    <div class="fl-right">
+                                        <a href="" id="btn-buy-continue" class="btn-success">Mua tiếp</a>
+                                        <a href="~/Cart/DeleteAll" title="" id="delete-cart" class="btn-danger">Xóa giỏ hàng</a>
+                                        <a href="~/Checkout/" title="" id="checkout-cart">Thanh toán</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.num-order').change(function () {
+                var quantity = $(this).val();
+                var id = $(this).attr('data-id');
+                var data = { id: id, quantity: quantity };
+                $.ajax({
+                    url: "Cart/UpdateCart",
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#sub_total_" + id).text(data.sub_total + "đ");
+                        $("#total-price span.total").text(data.total + "đ");
+                    },
+                    error: function (xhr, ajaxOption, thrownError) {
+                        alert(xhr.status);
+                        alert(thrownError);
+                    }
+                });
+            });
+        });
+    </script>    
+}

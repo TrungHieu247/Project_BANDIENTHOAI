@@ -1,0 +1,78 @@
+﻿@model Tuple<Project_BanLapTop.Models.tb_order, List<Project_BanLapTop.Models.tb_orderDetail>>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    ViewBag.Active = "order";
+}
+
+<div id="content" class="container-fluid">
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Thông tin đơn hàng
+        </div>
+        <div class="card-body">
+            <p class="cart-text font-weight-bold">Mã đơn hàng</p>
+            <p class="card-text">@Model.Item1.Id</p>
+            <p class="cart-text font-weight-bold">Địa chỉ nhận hàng</p>
+            <p class="card-text">@Model.Item1.tb_guest.AddressShip</p>
+            <p class="cart-text font-weight-bold">Số điện thoại</p>
+            <p class="card-text">@Model.Item1.tb_guest.Phone</p>
+            <p class="cart-text font-weight-bold">Email</p>
+            <p class="card-text">@Model.Item1.tb_guest.Email</p>
+            <p class="cart-text font-weight-bold">Thông tin vận chuyển</p>
+            <p class="card-text">@Html.Raw(Model.Item1.Status == "home_payment" ? "Thanh toán tại nhà" : "Thanh toán tại cửa hàng")</p>
+            <form action="?id=@Model.Item1.Id" method="POST">
+                <div class="form-group">
+                    <label for="status" class="cart-text font-weight-bold">Tình trạng đơn hàng</label>
+                    <select name="status" id="status" class="form-control">
+                        <option @Html.Raw(Model.Item1.Status == "processing" ? "selected" : "") value="processing">Đang xử lý</option>
+                        <option @Html.Raw(Model.Item1.Status == "being_transported" ? "selected" : "") value="being_transported">Đang vận chuyển</option>
+                        <option @Html.Raw(Model.Item1.Status == "success" ? "selected" : "") value="success">Thành công</option>
+                        <option @Html.Raw(Model.Item1.Status == "cancelled" ? "selected" : "") value="cancelled">Hủy đơn hàng</option>
+                    </select>
+                </div>
+                <input type="submit" value="Cập nhật đơn hàng" name="btn_update" class="btn btn-primary">
+            </form>
+            <p class="card-text font-weight-bold text-uppercase mt-3">Sản phẩm đơn hàng</p>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Ảnh sản phẩm</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int temp = 0;}
+                    @foreach (var item in Model.Item2)
+                    {
+                        temp++;
+                        <tr>
+                            <th scope="row">@temp</th>
+                            <td>
+                                <img src="@item.tb_product.Image" style="width: 150px; height: 100px" alt="">
+                            </td>
+                            <td>@item.tb_product.Name</td>
+                            <td>@string.Format("{0:0,0}", item.Price)đ</td>
+                            <td>@item.Quantity</td>
+                            <td>@string.Format("{0:0,0}", item.Price * item.Quantity)đ</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="section pt-3 pb-3">
+                <p class="card-text font-weight-bold text-uppercase mt-3">Giá trị đơn hàng</p>
+                <div class="row">
+                    <div class="col-2 text-right">Tổng số lượng:</div>
+                    <div class="col-10">@Model.Item1.Quantity sản phẩm</div>
+                </div>
+                <div class="row text-danger font-weight-bold">
+                    <div class="col-2 text-right">Tổng đơn hàng: </div>
+                    <div class="col-10">@string.Format("{0:0,0}",Model.Item1.Total)đ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

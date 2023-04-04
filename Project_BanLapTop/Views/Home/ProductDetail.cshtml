@@ -1,0 +1,109 @@
+﻿@model Tuple<List<Project_BanLapTop.Models.tb_category>, Project_BanLapTop.Models.tb_product, List<Project_BanLapTop.Models.tb_productImage>, List<Project_BanLapTop.Models.tb_product>>
+@{
+    ViewBag.Title = "Product_Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main-content-wp" class="clearfix detail-product-page">
+    <div class="wp-inner">
+        <div class="secion" id="breadcrumb-wp">
+            <div class="secion-detail">
+                <ul class="list-item clearfix">
+                    <li>
+                        <a href="" title="">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="" title="">Điện thoại</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content fl-right">
+            <div class="section" id="detail-product-wp">
+                <div class="section-detail clearfix">
+                    <div class="thumb-wp fl-left">
+                        <a style="display:block; width: 355px;" href="" title="" id="main-thumb">
+                            <img id="zoom" style="width: 350px; height: 350px; max-width: 350px;max-height: 350px;" src="@Model.Item2.Image" data-zoom-image="@Model.Item2.Image" />
+                        </a>
+                        <div id="list-thumb">
+                            <a href="" data-image="@Model.Item2.Image" data-zoom-image="@Model.Item2.Image">
+                                <img id="zoom" src="@Model.Item2.Image" />
+                            </a>
+                            @foreach (var item in Model.Item3)
+                            {
+                                <a href="" data-image="@item.Image" data-zoom-image="@item.Image">
+                                    <img id="zoom" src="@item.Image" />
+                                </a>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="thumb-respon-wp fl-left">
+                        <img src="@Model.Item2.Image" alt="">
+                    </div>
+                    <form action="~/Cart/AddCart/@Model.Item2.Id?strUrl=@Request.Url.ToString()" method="post">
+                        <div class="info fl-right">
+                            <h3 class="product-name">@Model.Item2.Name</h3>
+                            <div class="desc">
+                                @Model.Item2.ShortDescription
+                            </div>
+                            <div class="num-product">
+                                <span class="title">Sản phẩm: </span>
+                                <span class="status">@Html.Raw(Model.Item2.QuantityInSock > 0 ? "Còn hàng" : "Hết hàng")</span>
+                            </div>
+                            <p class="price">@string.Format("{0:0,0}", Model.Item2.Price)đ</p>
+                            <div id="num-order-wp">
+                                <a title="" id="minus"><i class="fa fa-minus"></i></a>
+                                <input type="text" name="num_order" value="1" id="num-order">
+                                <a title="" id="plus"><i class="fa fa-plus"></i></a>
+                            </div>
+                            <input type="submit" name="btn-add" value="Thêm giỏ hàng" class="add-cart" style="border:none" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="section" id="post-product-wp">
+                <div class="section-head">
+                    <h3 class="section-title">Mô tả sản phẩm</h3>
+                </div>
+                <div class="section-detail">
+                    @Html.Raw(1 == 1 ? Model.Item2.DetailDescription : "")
+                </div>
+            </div>
+            <div class="section" id="same-category-wp">
+                <div class="section-head">
+                    <h3 class="section-title">Cùng chuyên mục</h3>
+                </div>
+                <div class="section-detail">
+                    <ul class="list-item">
+                        @foreach (var item in Model.Item4)
+                        {
+                            <li>
+                                <a style="display:block; height: 150px;" href="" title="" class="thumb">
+                                    <img style="height:100%; width: 100%;" src="@item.Image">
+                                </a>
+                                <a href="" title="" class="product-name">@item.Name</a>
+                                <div class="price">
+                                    <span class="new">@string.Format("{0:0,0}",item.Price)đ</span>
+                                </div>
+                                <div class="action clearfix">
+                                    <a href="~/Home/ProductDetail/@item.Id" title="" class="buy-now fl-right">Mua ngay</a>
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar fl-left">
+            @Html.Partial("~/Views/Shared/Category_Product_Partial.cshtml")
+            <div class="section" id="banner-wp">
+                <div class="section-detail">
+                    <a href="" title="" class="thumb">
+                        <img src="public/images/banner.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

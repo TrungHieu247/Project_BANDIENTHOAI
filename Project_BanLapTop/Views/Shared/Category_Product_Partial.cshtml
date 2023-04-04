@@ -1,0 +1,15 @@
+﻿<div class="section" id="category-product-wp">
+    <div class="section-head">
+        <h3 class="section-title">Danh mục sản phẩm</h3>
+    </div>
+    <div class="secion-detail">
+        <ul class="list-item">
+            @foreach (var item in Model.Item1)
+            {
+                <li>
+                    <a href="~/Home/ProductCategory/@item.Id" title="">@item.Name</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

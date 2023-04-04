@@ -1,4 +1,4 @@
-﻿@model Project_BanLapTop.Models.tb_product
+﻿@model Tuple<Project_BanLapTop.Models.tb_product, List<Project_BanLapTop.Models.tb_category>>
 @{
     ViewBag.Title = "Create";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -12,63 +12,79 @@
         </div>
         <div class="card-body">
             <form action="~/Admin/Product/Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Item1.Id)
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="productCode">Mã sản phẩm</label>
-                            <input class="form-control" type="text" name="productCode" id="productCode">
+                            <input class="form-control" type="text" name="productCode" id="productCode" value="@Model.Item1.ProductCode">
+                            @Html.ValidationMessageFor(model => model.Item1.ProductCode, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label for="name">Tên sản phẩm</label>
-                            <input class="form-control" type="text" name="name" id="name">
+                            <input class="form-control" type="text" name="name" id="name" value="@Model.Item1.Name">
+                            @Html.ValidationMessageFor(model => model.Item1.Name, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label for="price">Giá</label>
-                            <input class="form-control" type="number" name="price" id="price">
+                            <input class="form-control" type="number" name="price" id="price" value="@Model.Item1.Price">
+                            @Html.ValidationMessageFor(model => model.Item1.Price, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group">
                             <label for="quantityInSock">Số lượng tồn</label>
-                            <input class="form-control" type="number" name="quantityInSock" id="quantityInSock">
+                            <input class="form-control" type="number" name="quantityInSock" id="quantityInSock" value="@Model.Item1.QuantityInSock">
+                            @Html.ValidationMessageFor(model => model.Item1.QuantityInSock, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
                             <label for="shortDescription">Mô tả sản phẩm</label>
-                            <textarea name="shortDescription" class="form-control" id="shortDescription" cols="30" rows="12"></textarea>
+                            <textarea name="shortDescription" class="form-control" id="shortDescription" cols="30" rows="12">@Model.Item1.ShortDescription</textarea>
+                            @Html.ValidationMessageFor(model => model.Item1.ShortDescription, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="detailDescription">Chi tiết sản phẩm</label>
-                    <textarea name="detailDescription" class="form-control" id="detailDescription" cols="30" rows="5"></textarea>
+                    <textarea name="detailDescription" class="form-control" id="detailDescription" cols="30" rows="5">@Model.Item1.DetailDescription</textarea>
+                    @Html.ValidationMessageFor(model => model.Item1.DetailDescription, "", new { @class = "text-danger" })
                 </div>
-
                 <div class="form-group">
                     <label for="image">Ảnh đại diện sản phẩm</label>
-                    <input type="file" name="image" id="image" class="form-control-file" />
+                    <input type="file" name="Image" id="image" class="form-control-file" />
+                    @Html.ValidationMessageFor(model => model.Item1.Image, "", new { @class = "text-danger" })
                 </div>
-
                 <div class="form-group">
                     <label for="detail_images">Ảnh chi tiết sản phẩm</label>
                     <input type="file" name="detail_images" multiple="multiple" id="detail_images" class="form-control-file" />
                 </div>
-
+                <div class="form-check">
+                    <input type="checkbox" name="SellWell" value="true" id="sellwell" class="form-check-input" />
+                    <label class="form-check-label" for="sellwell">Sản phẩm bán chạy</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="Outstanding" value="true" id="outstanding" class="form-check-input" />
+                    <label class="form-check-label" for="outstanding">Sản phẩm nổi bật</label>
+                </div>
                 <div class="form-group">
                     <label for="category">Danh mục</label>
                     <select class="form-control" id="category" name="Category_Id">
                         <option value="">Chọn danh mục</option>
-                        @foreach (var item in Model.ListCategory)
+                        @foreach (var item in Model.Item2)
                         {
                             <option value="@item.Id">@item.Name</option>
                         }
                     </select>
+                    @Html.ValidationMessageFor(model => model.Item1.Category_Id, "", new { @class = "text-danger" })
                 </div>
                 <button type="submit" class="btn btn-primary">Thêm mới</button>
             </form>
         </div>
     </div>
 </div>
-@section scripts{ 
+@section scripts{
     <script>
         CKEDITOR.replace("detailDescription")
         function BrowseSever() {

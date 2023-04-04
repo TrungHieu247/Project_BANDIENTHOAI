@@ -17,8 +17,8 @@ namespace Project_BanLapTop.Areas.Admin
             context.MapRoute(
                "Admin_default",
                "Admin/{controller}/{action}/{id}",
-               new { action = "Index", controller = "Home" , id = UrlParameter.Optional }
-               //namespaces: new[] { "WebsiteBanLaptop.Areas.Admin.Controllers" }
+               new { action = "Index", controller = "Home" , id = UrlParameter.Optional },
+               namespaces: new[] { "Project_BanLapTop.Areas.Admin.Controllers" }
            );
         }
     }
