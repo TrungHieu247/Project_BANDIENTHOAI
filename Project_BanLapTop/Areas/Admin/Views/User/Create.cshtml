@@ -34,14 +34,13 @@
                     <label for="Password">Mật khẩu</label>
                     <input class="form-control" type="password" name="Password" id="Password">
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    <span class="text-danger">@TempData["Password"]</span>
                 </div>
                 <div class="form-group">
                     <label for="Password">Xác nhận mật khẩu</label>
                     <input class="form-control" type="password" name="Confirm_password" id="Confirm_password">
                     <span class="text-danger">@TempData["Confirm_password"]</span>
-                    <span class="text-danger">@TempData["Password"]</span>
                 </div>
-
                 <div class="form-group">
                     <label for="" class="col-sm-2 col-form-label">Nhóm quyền</label>
                     @{

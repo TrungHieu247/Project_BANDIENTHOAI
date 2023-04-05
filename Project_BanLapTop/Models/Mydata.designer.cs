@@ -20,8 +20,8 @@ namespace Project_BanLapTop.Models
 	using System.Linq.Expressions;
 	using System.ComponentModel;
 	using System;
-	
-	
+	using System.ComponentModel.DataAnnotations;
+
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="WebBanHangOnline")]
 	public partial class MydataDataContext : System.Data.Linq.DataContext
 	{
@@ -449,6 +449,7 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fullname", DbType="NVarChar(255)")]
+		[Required(ErrorMessage = "Không được bỏ trống họ và tên")]
 		public string Fullname
 		{
 			get
@@ -469,7 +470,8 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(255)")]
-		public string Username
+        [Required(ErrorMessage = "Không được bỏ trống tên đăng nhập")]
+        public string Username
 		{
 			get
 			{
@@ -489,7 +491,8 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(60)")]
-		public string Password
+        [Required(ErrorMessage = "Không được bỏ trống mật khẩu")]
+        public string Password
 		{
 			get
 			{
@@ -509,7 +512,9 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(255)")]
-		public string Email
+        [Required(ErrorMessage = "Không được bỏ trống email")]
+        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Email không đúng định dạng")]
+        public string Email
 		{
 			get
 			{
@@ -731,6 +736,7 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fullname", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		[Required(ErrorMessage = "Không được bỏ trống họ và tên")]
 		public string Fullname
 		{
 			get
@@ -751,7 +757,9 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(255)")]
-		public string Email
+        [Required(ErrorMessage = "Không được bỏ trống email")]
+        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Email không đúng định dạng")]
+        public string Email
 		{
 			get
 			{
@@ -771,7 +779,11 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Phone", DbType="VarChar(11)")]
-		public string Phone
+        [Required(ErrorMessage = "Không được bỏ trống số điện thoại")]
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            ErrorMessage = "Số điện thoại không đúng định dạng")]
+        public string Phone
 		{
 			get
 			{
@@ -791,7 +803,8 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressShip", DbType="NText", UpdateCheck=UpdateCheck.Never)]
-		public string AddressShip
+        [Required(ErrorMessage = "Không được bỏ trống địa chỉ")]
+        public string AddressShip
 		{
 			get
 			{
@@ -811,7 +824,8 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
-		public string Username
+        [Required(ErrorMessage = "Không được bỏ trống tên đăng nhập")]
+        public string Username
 		{
 			get
 			{
@@ -831,7 +845,8 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(60) NOT NULL", CanBeNull=false)]
-		public string Password
+        [Required(ErrorMessage = "Không được bỏ trống mật khẩu")]
+        public string Password
 		{
 			get
 			{
@@ -851,7 +866,8 @@ namespace Project_BanLapTop.Models
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gender", DbType="NVarChar(10) NOT NULL", CanBeNull=false)]
-		public string Gender
+        [Required(ErrorMessage = "Không được bỏ trống giới tính")]
+        public string Gender
 		{
 			get
 			{

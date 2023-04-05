@@ -46,16 +46,22 @@ namespace Project_BanLapTop.Controllers
                 {
                     beforeUrl = "/";
                 }
+                if(beforeUrl == "")
+                {
+                    beforeUrl = "/";
+                }
                 return Redirect(beforeUrl);
             }
         }
 
         public ActionResult Register()
         {
-            return View();
+            tb_guest guest = new tb_guest();
+            return View(guest);
         }
        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(tb_guest model,FormCollection collection)
         {
             var confirm_password = collection["confirm_password"];
@@ -74,10 +80,11 @@ namespace Project_BanLapTop.Controllers
                     if (LibraryCart.CheckUser(model.Username, model.Email) == true)
                     {
                         TempData["UserExsist"] = "Tên đăng nhập hoặc email đã tồn tại";
-                        return View();
+                        return View(model);
                     }
                     data.tb_guests.InsertOnSubmit(model);
                     data.SubmitChanges();
+                    TempData["Status"] = "Đăng ký tài khoản thành công";
                     return RedirectToAction("Login");
                 }
             }

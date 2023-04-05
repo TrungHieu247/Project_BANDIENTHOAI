@@ -18,6 +18,10 @@
 <body>
     <div id="wp-form-login">
         <h1 class="title-login">Đăng nhập</h1>
+        @if (@TempData["Status"] != null)
+        {
+            <p class="alert alert-success">@TempData["Status"]</p>
+        }
         <form action="?beforeUrl=@Request.UrlReferrer" method="POST" id="form-login">
             <input type="text" name="username" id="username" placeholder="Username" value="">
             <input type="password" name="password" id="password" placeholder="Password">
